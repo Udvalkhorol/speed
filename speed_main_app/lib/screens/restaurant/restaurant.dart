@@ -1,16 +1,59 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:speed_app/screens/prod_detail/individualItem.dart';
 import 'package:speed_app/widgets/scaffold.dart';
 import '../../const/colors.dart';
 import '../../utils/helper.dart';
 import '../../widgets/appbar.dart';
 import '../../widgets/cards.dart';
+import 'package:http/http.dart' as http;
 import '../../widgets/customNavBar.dart';
-import '../../widgets/searchBar.dart';
-import '../homeScreen/specialRestaur.dart';
 
-class RestaurantScreen extends StatelessWidget {
+class RestaurantScreen extends StatefulWidget {
   static const routeName = "/restaurantScreen";
+
+  @override
+  _RestaurantScreen createState() => _RestaurantScreen();
+}
+
+class _RestaurantScreen extends State<RestaurantScreen> {
+  List<dynamic> _data = [];
+
+  @override
+  void initState() {
+    getRestaurantList();
+    super.initState();
+  }
+
+  Future<void> getRestaurantList() async {
+    final response = await http.get(Uri.parse('http://localhost:8081/selectRestaurant'));
+    if (response.statusCode == 200) {
+      setState(() {
+        _data = jsonDecode(response.body);
+        print(_data);
+      });
+    } else {
+      showToast(context, 'Алдаа гарлаа');
+    }
+  }
+
+  void showToast(BuildContext context, String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(
+            color: AppColor.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: AppColor.placeholderBg,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
@@ -24,116 +67,55 @@ class RestaurantScreen extends StatelessWidget {
           SafeArea(
             child: Column(
               children: [
-                // Padding(
-                //   padding: EdgeInsets.all(10),
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //       border: Border.all(color: AppColor.blue2),
-                //       borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                //     ),
-                //     child: SearchBar(
-                //       title: "Хайх",
-                //       width: double.infinity,
-                //       height: 40,
-                //     ),
-                //   ),
-                // ),
                 SizedBox(height: 20),
                 SizedBox(
                     height: Helper.getScreenHeight(context) * 0.6,
                     width: Helper.getScreenWidth(context),
                     child: Stack(
                       children: [
-                        // Container(
-                        //   height: double.infinity,
-                        //   width: 100,
-                        //   decoration: ShapeDecoration(
-                        //       shape: RoundedRectangleBorder(
-                        //         borderRadius: BorderRadius.only(
-                        //           topRight: Radius.circular(30),
-                        //           bottomRight: Radius.circular(30),
-                        //         ),
-                        //       ),
-                        //       color: AppColor.red),
-                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  // Navigator.pushNamed(context, IndividualItem.routeName);
-                                },
-                                child: MenuCard(
-                                  imageShape: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
-                                      height: 60,
-                                      width: 60,
-                                      child: Image.asset(
-                                        Helper.getAssetName("hamburger3.jpg", "real"),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  name: "Burger King",
-                                  count: "12",
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              MenuCard(
-                                imageShape: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Container(
-                                    height: 60,
-                                    width: 60,
-                                    child: Image.asset(
-                                      Helper.getAssetName("coffee2.jpg", "real"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                name: "Little Sheep",
-                                count: "120",
-                              ),
-                              SizedBox(height: 20),
-                              GestureDetector(
-                                onTap: () {
-                                  // Navigator.of(context).pushNamed(DessertScreen.routeName);
-                                },
-                                child: MenuCard(
-                                  imageShape: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
-                                      height: 60,
-                                      width: 60,
-                                      child: Image.asset(
-                                        Helper.getAssetName("dessert.jpg", "real"),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  name: "Mandakh",
-                                  count: "35",
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              MenuCard(
-                                imageShape: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Container(
-                                    height: 60,
-                                    width: 60,
-                                    child: Image.asset(
-                                      Helper.getAssetName("western2.jpg", "real"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                name: "Namaste",
-                                count: "25",
-                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: _data.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              // Navigator.pushNamed(context, IndividualItem.routeName);
+                                            },
+                                            child: MenuCard(
+                                              imageShape: ClipRRect(
+                                                borderRadius: BorderRadius.circular(10),
+                                                child: Container(
+                                                  height: 55,
+                                                  width: 55,
+                                                  child: Image.network(
+                                                    _data[index]["logo"],
+                                                    fit: BoxFit.cover,
+                                                    errorBuilder: (context, error, stackTrace) {
+                                                      return Image.asset(
+                                                        'assets/images/placeholder.jpg',
+                                                        fit: BoxFit.cover,
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                              name: _data[index]["name"],
+                                              count: "12",
+                                            ),
+                                          ),
+                                          SizedBox(height: 20),
+                                        ],
+                                      );
+                                    }),
+                              )
                             ],
                           ),
                         )
