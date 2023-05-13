@@ -20,18 +20,17 @@ Widget btn({
         height: height,
         margin: margin,
         decoration: BoxDecoration(
-            // color: !enabled ? AppColor.btnColor : null,
-            color: isColor ? color : AppColor.red,
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0.0, 1.5),
-                blurRadius: 1.5,
-              ),
-            ]
-            // border: enabled ? null : Border.all(width: 1.0, color: !enabled ? gColor!.lblPrimary : gColor!.lblPrimary),
+          color: isColor ? color : AppColor.red,
+          borderRadius: BorderRadius.all(Radius.circular(radius)),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0.0, 1.5),
+              blurRadius: 1.5,
             ),
+          ],
+          // border: enabled ? null : Border.all(width: 1.0, color: !enabled ? gColor!.lblPrimary : gColor!.lblPrimary),
+        ),
         child: Material(
           color: Colors.transparent,
           child: InkWell(

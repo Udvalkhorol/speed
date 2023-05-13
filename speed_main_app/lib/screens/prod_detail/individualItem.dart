@@ -32,18 +32,6 @@ class _IndividualItem extends State<IndividualItem> {
     }
   }
 
-  // Future<void> _addShoppingCart() async {
-  //   // Uri.parse('http://localhost:8081/login?mobileNum=' + phone.text + '&password=' + password.text),
-  //   final response = await http.post(Uri.parse('http://localhost:8081/addShopCart?userId=' + Global.userId  + '&foodId='  +  food['id'] + '&price=' + food['price'] + '&qty=' value + '&totalPrice=' + value * double.parse(food['price']));
-  //   if (response.statusCode == 200) {
-  //     setState(() {
-  //       showToast(context, 'Амжилттай');
-  //     });
-  //   } else {
-  //     showToast(context, 'Алдаа гарлаа');
-  //   }
-  // }
-
   void showToast(BuildContext context, String message) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(

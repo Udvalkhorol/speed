@@ -12,8 +12,14 @@ import '../../widgets/scaffold.dart';
 import '../../widgets/shoppingCard.dart';
 import 'package:http/http.dart' as http;
 
+import '../order/ui/orderConfirmScreen.dart';
+
 class ShoppingCartScreen extends StatefulWidget {
   static const routeName = "/shoppingCartScreen";
+
+  String location;
+
+  ShoppingCartScreen({this.location});
 
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
@@ -29,6 +35,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     _selectShopCart();
     super.initState();
     _shopCart = [];
+    // widget.location = ModalRoute.of(context).settings.arguments as String;
+
+    print(widget.location);
   }
 
   Future<void> _selectShopCart() async {
@@ -42,18 +51,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       for (var i in _shopCart) {
         totalPrice = totalPrice + i['totalPrice'];
       }
-    } else {
-      showToast(context, 'Алдаа гарлаа');
-    }
-  }
-
-  Future<void> _createOrder() async {
-    final response = await http.post(Uri.parse('http://localhost:8081/createOrder?userId=' + Global.userId.toString()));
-    if (response.statusCode == 200) {
-      setState(() {
-        showToast(context, "Амжилттай");
-        Navigator.popAndPushNamed(context, OrderScreen.routeName);
-      });
     } else {
       showToast(context, 'Алдаа гарлаа');
     }
@@ -123,7 +120,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       value: totalPrice,
                       text: 'Захиалга үүсгэх',
                       onPressed: () {
-                        _createOrder();
+                        Navigator.pushNamed(context, OrderConfirmScreen.routeName, arguments: '');
                       },
                       isHaveLeading: true,
                       // control: checkAll

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speed_app/screens/homeScreen/demandFood.dart';
+import 'package:speed_app/screens/order/ui/orderConfirmScreen.dart';
 import 'package:speed_app/screens/settings/changeAddressScreen.dart';
 import 'package:speed_app/screens/order/ui/orderScreen.dart';
 import 'package:speed_app/screens/search/searchScreen.dart';
@@ -19,11 +20,9 @@ import 'screens/settings/moreScreen.dart';
 import 'screens/homeScreen/specialRestaur.dart';
 import 'screens/settings/profileScreen.dart';
 import 'screens/prod_detail/individualItem.dart';
-import 'screens/finance/paymentScreen.dart';
 import 'screens/notification/notificationScreen.dart';
 import 'screens/settings/aboutScreen.dart';
 import 'screens/order/ui/orderScreenDetail.dart';
-import 'screens/finance/checkoutScreen.dart';
 import './const/colors.dart';
 
 void main() {
@@ -95,17 +94,16 @@ class MyApp extends StatelessWidget {
         ProfileScreen.routeName: (context) => ProfileScreen(),
         MoreScreen.routeName: (context) => MoreScreen(),
         IndividualItem.routeName: (context) => IndividualItem(),
-        PaymentScreen.routeName: (context) => PaymentScreen(),
         NotificationScreen.routeName: (context) => NotificationScreen(),
         AboutScreen.routeName: (context) => AboutScreen(),
         OrderScreen.routeName: (context) => OrderScreen(),
-        CheckoutScreen.routeName: (context) => CheckoutScreen(),
         ChangeAddressScreen.routeName: (context) => ChangeAddressScreen(),
         ShoppingCartScreen.routeName: (context) => ShoppingCartScreen(),
         OrderScreenDetail.routeName: (context) => OrderScreenDetail(),
         SettingsScreen.routeName: (context) => SettingsScreen(),
         SearchScreen.routeName: (context) => SearchScreen(),
         DemandFood.routeName: (context) => DemandFood(),
+        OrderConfirmScreen.routeName: (context) => OrderConfirmScreen(),
       },
     );
   }

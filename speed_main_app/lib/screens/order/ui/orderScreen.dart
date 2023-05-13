@@ -42,6 +42,7 @@ class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStat
     if (response.statusCode == 200) {
       setState(() {
         data = jsonDecode(response.body);
+        print(data);
       });
     } else {
       showToast(context, 'Алдаа гарлаа');
@@ -68,8 +69,8 @@ class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     var _tabBarView = TabBarView(controller: _tabController, physics: const NeverScrollableScrollPhysics(), children: <Widget>[
-      OrderWidget(orderType: OrderType.active, data: data),
-      OrderHistoryWidget(orderType: OrderType.history, data: data),
+      OrderWidget(orderType: OrderType.active, data: data.isEmpty ? null : data),
+      OrderHistoryWidget(orderType: OrderType.history, data: data.isEmpty ? null : data),
     ]);
     return DefaultScaffold(
         appBar: DefaultAppBar(

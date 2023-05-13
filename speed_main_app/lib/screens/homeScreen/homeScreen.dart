@@ -37,6 +37,7 @@ class _HomeScreen extends State<HomeScreen> {
           _location.add(i['city'] + " " + i['district'] + " " + i['street'] + " " + i['addrDesc']);
         }
         _selectedValue = _location.elementAt(0);
+        Global.location = _selectedValue;
       });
     } else {
       showToast(context, 'Алдаа гарлаа');
@@ -84,7 +85,6 @@ class _HomeScreen extends State<HomeScreen> {
   void _onDropdownChanged(String newValue) {
     setState(() {
       _selectedValue = newValue;
-      print(_selectedValue);
     });
   }
 
@@ -121,7 +121,7 @@ class _HomeScreen extends State<HomeScreen> {
                             color: AppColor.red,
                             icon: Icon(Icons.shopping_cart),
                             onPressed: () {
-                              Navigator.of(context).pushNamed(ShoppingCartScreen.routeName);
+                              Navigator.pushNamed(context, ShoppingCartScreen.routeName);
                             },
                           ),
                         ),

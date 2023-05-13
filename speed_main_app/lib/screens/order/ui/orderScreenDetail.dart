@@ -1,294 +1,149 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:speed_app/screens/homeScreen/homeScreen.dart';
+import 'package:speed_app/widgets/scaffold.dart';
 
 import '../../../const/colors.dart';
 import '../../../utils/helper.dart';
-import '../../../widgets/customNavBar.dart';
-import '../../finance/checkoutScreen.dart';
+import '../../../widgets/appbar.dart';
+import '../../../widgets/btn.dart';
+import 'package:http/http.dart' as http;
 
-class OrderScreenDetail extends StatelessWidget {
+class OrderScreenDetail extends StatefulWidget {
   static const routeName = "/orderScreenDetail";
 
   @override
+  _OrderScreenDetail createState() => _OrderScreenDetail();
+}
+
+class _OrderScreenDetail extends State<OrderScreenDetail> {
+  double total = 0.0;
+  String orderId = '';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> updateOrder() async {
+    final response = await http.post(Uri.parse('http://localhost:8081/updateOrderStatus?orderId=' + orderId.toString()));
+    if (response.statusCode == 200) {
+      setState(() {
+        // _data = jsonDecode(response.body);
+        showToast(context, 'Амжилттай');
+        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      });
+    } else {
+      showToast(context, 'Алдаа гарлаа');
+    }
+  }
+
+  void showToast(BuildContext context, String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(
+            color: AppColor.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: AppColor.placeholderBg,
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          SafeArea(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios_rounded,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        "My Order",
-                        style: Helper.getTheme(context).headline5,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                    height: 80,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            child: Image.asset(
-                              Helper.getAssetName("hamburger.jpg", "real"),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              "King Burgers",
-                              style: Helper.getTheme(context).headline3,
-                            ),
-                            Row(
-                              children: [
-                                Image.asset(
-                                  Helper.getAssetName(
-                                    "star_filled.png",
-                                    "virtual",
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "4.9",
-                                  style: TextStyle(
-                                    color: AppColor.red,
-                                  ),
-                                ),
-                                Text(" (124 ratings)"),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text("Burger"),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    bottom: 5,
-                                  ),
-                                  child: Text(
-                                    ".",
-                                    style: TextStyle(
-                                      color: AppColor.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Text("Western Food"),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  height: 15,
-                                  child: Image.asset(
-                                    Helper.getAssetName(
-                                      "loc.png",
-                                      "virtual",
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text("No 03, 4th Lane, Newyork")
-                              ],
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  width: double.infinity,
-                  color: AppColor.placeholderBg,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      children: [
-                        BurgerCard(
-                          price: "16",
-                          name: "Beef Burger",
-                        ),
-                        BurgerCard(
-                          price: "14",
-                          name: "Classic Burger",
-                        ),
-                        BurgerCard(
-                          price: "17",
-                          name: "Cheese Chicken Burger",
-                        ),
-                        BurgerCard(
-                          price: "15",
-                          name: "Chicken Legs Basket",
-                        ),
-                        BurgerCard(
-                          price: "6",
-                          name: "French Fries Large",
-                          isLast: true,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
+    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    final data = args['data'];
+    final from = args['from'];
+    print(data);
+
+    total = 0;
+    orderId = '';
+    for (int i = 0; i < data.length; i++) {
+      total = total + data[i]['totalPrice'];
+      orderId = (data[i]['orderId']).toString();
+    }
+
+    return DefaultScaffold(
+      appBar: DefaultAppBar(
+        actions: [],
+        isRemoveLeadingSpace: false,
+        title: 'Миний захиалга',
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
                     children: [
                       Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: AppColor.placeholder.withOpacity(0.25),
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "Delivery Instruction",
-                                style: Helper.getTheme(context).headline3,
-                              ),
-                            ),
-                            TextButton(
-                                onPressed: () {},
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      color: AppColor.red,
-                                    ),
-                                    Text(
-                                      "Add Notes",
-                                      style: TextStyle(
-                                        color: AppColor.red,
-                                      ),
-                                    )
-                                  ],
-                                ))
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Sub Total",
-                              style: Helper.getTheme(context).headline3,
-                            ),
-                          ),
-                          Text(
-                            "\$68",
-                            style: Helper.getTheme(context).headline3.copyWith(
-                                  color: AppColor.red,
-                                ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Delivery Cost",
-                              style: Helper.getTheme(context).headline3,
-                            ),
-                          ),
-                          Text(
-                            "\$2",
-                            style: Helper.getTheme(context).headline3.copyWith(
-                                  color: AppColor.red,
-                                ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Divider(
-                        color: AppColor.placeholder.withOpacity(0.25),
-                        thickness: 1.5,
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Total",
-                              style: Helper.getTheme(context).headline3,
-                            ),
-                          ),
-                          Text(
-                            "\$70",
-                            style: Helper.getTheme(context).headline3.copyWith(
-                                  color: AppColor.red,
-                                  fontSize: 22,
-                                ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      SizedBox(
-                        height: 50,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(CheckoutScreen.routeName);
-                          },
-                          child: Text("Checkout"),
+                        color: AppColor.placeholderBg,
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: BurgerCard(
+                          price: data[index]['totalPrice'].toString(),
+                          qty: data[index]['qty'].toString() + 'ш',
+                          name: utf8.decode(data[index]['name'].toString().runes.toList()),
                         ),
                       ),
                     ],
-                  ),
-                )
-              ],
+                  );
+                },
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: CustomNavBar(),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  SizedBox(height: 10),
+                  Divider(
+                    color: AppColor.placeholder.withOpacity(0.25),
+                    thickness: 1.5,
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Нийт дүн",
+                          style: Helper.getTheme(context).headline3,
+                        ),
+                      ),
+                      Text(
+                        total.toString(),
+                        style: Helper.getTheme(context).headline3.copyWith(
+                              color: AppColor.red,
+                              fontSize: 22,
+                            ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  (from != 'history')
+                      ? btn(
+                          onPressed: () {
+                            updateOrder();
+                          },
+                          text: "Хүлээн авах",
+                        )
+                      : Container()
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -299,15 +154,19 @@ class BurgerCard extends StatelessWidget {
     Key key,
     String name,
     String price,
+    String qty,
     bool isLast = false,
   })  : _name = name,
         _price = price,
         _isLast = isLast,
+        _qty = qty,
         super(key: key);
 
   final String _name;
   final String _price;
   final bool _isLast;
+  final String _qty;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -322,18 +181,26 @@ class BurgerCard extends StatelessWidget {
         ),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: Text(
-              "${_name} x1",
-              style: TextStyle(
-                color: AppColor.primary,
-                fontSize: 16,
-              ),
+          Text(
+            _name,
+            style: TextStyle(
+              color: AppColor.primary,
+              fontSize: 16,
             ),
           ),
           Text(
-            "\$$_price",
+            _qty,
+            style: TextStyle(
+              color: AppColor.primary,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(width: 8),
+          Text(
+            _price,
             style: TextStyle(
               color: AppColor.primary,
               fontSize: 16,

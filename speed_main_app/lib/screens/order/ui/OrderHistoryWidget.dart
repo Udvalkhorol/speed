@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../../const/colors.dart';
+import '../../../utils/helper.dart';
 import '../../../widgets/lbl.dart';
 import '../../../widgets/separator.dart';
+import 'orderScreenDetail.dart';
 
 class OrderHistoryWidget extends StatefulWidget {
   final String orderType;
@@ -71,22 +73,28 @@ class _OrderHistoryWidget extends State<OrderHistoryWidget> {
                                             scrollDirection: Axis.vertical,
                                             itemCount: widget.data[index]['items'].length,
                                             itemBuilder: (BuildContext context, int i) {
-                                              return Container(
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      lbl(
-                                                        utf8.decode(widget.data[index]['items'][i]['name'].toString().runes.toList()),
-                                                      ),
-                                                      lbl(
-                                                        widget.data[index]['items'][i]['qty'].toString() + 'ш',
-                                                      ),
-                                                      lbl(
-                                                        widget.data[index]['items'][i]['price'].toString(),
-                                                      ),
-                                                    ],
+                                              return InkWell(
+                                                onTap: () {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    OrderScreenDetail.routeName,
+                                                    arguments: {'data': widget.data[index]['items'], 'from': 'history'},
+                                                  );
+                                                },
+                                                child: Container(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        lbl(
+                                                          utf8.decode(widget.data[index]['items'][i]['name'].toString().runes.toList()),
+                                                        ),
+                                                        lbl(
+                                                          widget.data[index]['items'][i]['price'].toString(),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               );

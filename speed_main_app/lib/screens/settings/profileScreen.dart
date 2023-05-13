@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:speed_app/widgets/scaffold.dart';
 import '../../const/colors.dart';
@@ -5,11 +7,59 @@ import '../../utils/helper.dart';
 import '../../widgets/appbar.dart';
 import '../../widgets/btn.dart';
 import '../../widgets/customFormInput.dart';
+import 'package:http/http.dart' as http;
+import '../../../global/global.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   static const routeName = "/profileScreen";
+
+  @override
+  _ProfileScreen createState() => _ProfileScreen();
+}
+
+class _ProfileScreen extends State<ProfileScreen> {
+  List<dynamic> _data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserInfo();
+  }
+
+  Future<void> _getUserInfo() async {
+    final res = await http.get(Uri.parse('http://localhost:8081/selectUser?userId=' + Global.userId.toString()));
+    if (res.statusCode == 200) {
+      setState(() {
+        _data = jsonDecode(res.body);
+        print(_data);
+      });
+    } else {
+      showToast(context, 'Алдаа гарлаа');
+    }
+  }
+
+  void showToast(BuildContext context, String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(
+            color: AppColor.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: AppColor.placeholderBg,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    final data = args['data'];
+
     return DefaultScaffold(
       appBar: DefaultAppBar(
         isRemoveLeadingSpace: false,
@@ -53,9 +103,7 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -81,16 +129,6 @@ class ProfileScreen extends StatelessWidget {
                         label: "И-мэйл",
                         value: "udval@email.com",
                       ),
-                      // SizedBox(height: 15),
-                      // CustomFormImput(
-                      //   label: "Mobile No",
-                      //   value: "emiliaclarke@email.com",
-                      // ),
-                      // SizedBox(height: 15),
-                      // CustomFormImput(
-                      //   label: "Address",
-                      //   value: "No 23, 6th Lane, Colombo 03",
-                      // ),
                       SizedBox(height: 15),
                       CustomFormImput(
                         label: "Нууц үг",

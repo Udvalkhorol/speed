@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speed_app/screens/login/introScreen.dart';
 import 'package:speed_app/widgets/btn.dart';
 import 'package:speed_app/widgets/scaffold.dart';
 import '../../const/colors.dart';
@@ -56,7 +57,8 @@ class _SignUpScreen extends State<SignUpScreen> {
           Global.userId = int.parse(response.body);
           print('****' '${Global.userId}' '****');
           showToast(context, 'Амжилттай');
-          Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+          // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+          Navigator.of(context).pushReplacementNamed(IntroScreen.routeName);
         } else {
           showToast(context, 'Утасны дугаар давхцсан эсвэл буруу байна.');
         }

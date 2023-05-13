@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:speed_app/screens/finance/paymentScreen.dart';
 import 'package:speed_app/widgets/scaffold.dart';
 
 import '../../const/colors.dart';
@@ -27,15 +26,6 @@ class MoreScreen extends StatelessWidget {
           child: Column(children: [
             SizedBox(
               height: 20,
-            ),
-            MoreCard(
-              image: Image.asset(
-                Helper.getAssetName("income.png", "virtual"),
-              ),
-              name: "Payment Details",
-              handler: () {
-                Navigator.of(context).pushNamed(PaymentScreen.routeName);
-              },
             ),
             SizedBox(
               height: 10,

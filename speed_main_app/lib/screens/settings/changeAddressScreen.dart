@@ -1,12 +1,59 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:speed_app/widgets/btn.dart';
+import 'package:speed_app/widgets/lbl.dart';
 import 'package:speed_app/widgets/scaffold.dart';
 import '../../const/colors.dart';
-import '../../utils/helper.dart';
+import '../../global/global.dart';
 import '../../widgets/appbar.dart';
-import '../../widgets/searchBar.dart';
+import 'package:http/http.dart' as http;
 
-class ChangeAddressScreen extends StatelessWidget {
+class ChangeAddressScreen extends StatefulWidget {
   static const routeName = "/changeAddressScreen";
+
+  @override
+  _ChangeAddressScreen createState() => _ChangeAddressScreen();
+}
+
+class _ChangeAddressScreen extends State<ChangeAddressScreen> {
+  List<dynamic> _data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getLocation();
+  }
+
+  Future<void> _getLocation() async {
+    final response = await http.get(Uri.parse('http://localhost:8081/getLocation?userId=' + Global.userId.toString()));
+    if (response.statusCode == 200) {
+      setState(() {
+        _data = jsonDecode(response.body);
+        print(_data);
+      });
+    } else {
+      showToast(context, 'Алдаа гарлаа');
+    }
+  }
+
+  void showToast(BuildContext context, String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(
+            color: AppColor.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: AppColor.placeholderBg,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
@@ -14,143 +61,81 @@ class ChangeAddressScreen extends StatelessWidget {
         isRemoveLeadingSpace: false,
         title: "Хаягийн мэдээлэл",
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 30,
-            ),
-            Stack(
-              children: [
-                SizedBox(
-                  height: Helper.getScreenHeight(context) * 0.6,
-                  child: Image.asset(
-                    Helper.getAssetName(
-                      "map.png",
-                      "real",
-                    ),
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-                Positioned(
-                  bottom: 30,
-                  right: 40,
-                  child: Image.asset(
-                    Helper.getAssetName(
-                      "current_loc.png",
-                      "virtual",
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 70,
-                  right: 180,
-                  child: Image.asset(
-                    Helper.getAssetName(
-                      "loc.png",
-                      "virtual",
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 170,
-                  left: 30,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 20,
-                    ),
-                    width: Helper.getScreenWidth(context) * 0.45,
-                    decoration: ShapeDecoration(
-                      color: AppColor.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Container(
+                        height: 80,
+                        width: double.infinity,
+                        padding: EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: AppColor.lblPrimary,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            lbl(
+                              _data[index]['city'],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            SizedBox(width: 5),
+                            lbl(
+                              _data[index]['district'],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            SizedBox(width: 5),
+                            lbl(
+                              _data[index]['street'],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            SizedBox(width: 5),
+                            lbl(
+                              _data[index]['addrDesc'],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Одоогийн хаяг",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "653 Nostrand Ave., Brooklyn, NY 11216",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 140,
-                  right: 205,
-                  child: ClipPath(
-                    clipper: CustomTriangleClipper(),
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      color: AppColor.red,
-                    ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
-            SizedBox(
-              height: 20,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            child: btn(
+              text: 'Нэмэх',
+              onPressed: () {
+                // Navigator.pushNamed(context, )
+              },
             ),
-            SearchBar(
-              title: "Хайх",
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: ShapeDecoration(
-                      shape: CircleBorder(),
-                      color: AppColor.red.withOpacity(0.2),
-                    ),
-                    child: Icon(
-                      Icons.star_rounded,
-                      color: AppColor.red,
-                      size: 30,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Text(
-                      "хадгалсан газар",
-                      style: TextStyle(
-                        color: AppColor.primary,
-                      ),
-                    ),
-                  ),
-                  Icon(Icons.arrow_forward_ios_rounded)
-                ],
-              ),
-            )
-          ],
-        ),
+          ),
+          // Padding(
+          //   padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 20),
+          //   child: btn(
+          //     text: 'Хаяг устгах',
+          //     color: AppColor.white,
+          //     isColor: true,
+          //   ),
+          // ),
+        ],
       ),
     );
   }

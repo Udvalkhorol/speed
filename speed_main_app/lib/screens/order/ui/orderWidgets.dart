@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:speed_app/screens/order/ui/orderScreenDetail.dart';
 import '../../../const/colors.dart';
 import '../../../widgets/lbl.dart';
 import '../../../widgets/separator.dart';
@@ -70,22 +71,28 @@ class _OrderWidget extends State<OrderWidget> {
                                               scrollDirection: Axis.vertical,
                                               itemCount: widget.data[index]['items'].length,
                                               itemBuilder: (BuildContext context, int i) {
-                                                return Container(
-                                                  child: Padding(
-                                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        lbl(
-                                                          utf8.decode(widget.data[index]['items'][i]['name'].toString().runes.toList()),
-                                                        ),
-                                                        lbl(
-                                                          widget.data[index]['items'][i]['qty'].toString() + 'ш',
-                                                        ),
-                                                        lbl(
-                                                          widget.data[index]['items'][i]['price'].toString(),
-                                                        ),
-                                                      ],
+                                                return InkWell(
+                                                  onTap: () {
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      OrderScreenDetail.routeName,
+                                                      arguments: {'data': widget.data[index]['items']},
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          lbl(
+                                                            utf8.decode(widget.data[index]['items'][i]['name'].toString().runes.toList()),
+                                                          ),
+                                                          lbl(
+                                                            widget.data[index]['items'][i]['price'].toString(),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 );
@@ -105,7 +112,7 @@ class _OrderWidget extends State<OrderWidget> {
               ),
             ),
           )
-        : Container(
+        : Center(
             child: lbl('Захиалга байхгүй байна'),
           );
   }
