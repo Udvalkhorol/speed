@@ -71,7 +71,6 @@ Widget ShoppingCard({
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: shopCart.length,
-              // itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: () {},
@@ -81,8 +80,6 @@ Widget ShoppingCard({
                       height: 100,
                       decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(5))),
                       child: Row(children: [
-                        // CheckBox(product.scfShopCartProduct[index].productControl),
-
                         /// Item picture
                         Expanded(
                           flex: 2,
@@ -183,7 +180,15 @@ Widget ShoppingCard({
                                         child: Padding(
                                           padding: const EdgeInsets.all(5),
                                           child: TextField(
-                                            enabled: false,
+                                            onChanged: (qty) async {
+                                              final response = await http.post(Uri.parse('http://localhost:8081/updateFoodQty?userId=' + Global.userId.toString() + '&foodId=' + '${shopCart['foodId']}' + '&qty=' + qty.toString()));
+                                              if (response.statusCode == 200) {
+                                                Navigator.pop(context);
+                                                showToast(context, 'Амжилттай');
+                                              } else {
+                                                showToast(context, 'Алдаа гарлаа');
+                                              }
+                                            },
                                             textAlign: TextAlign.center,
                                             controller: qty,
                                             decoration: InputDecoration(

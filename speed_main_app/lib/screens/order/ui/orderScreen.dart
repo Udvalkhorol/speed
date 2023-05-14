@@ -28,6 +28,7 @@ class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStat
   TabController _tabController;
   int _tabCount = 2;
   List<dynamic> data;
+  List<dynamic> restaurantList = [];
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStat
     super.initState();
     data = [];
     getData();
+    getRestaurantList();
   }
 
   Future<void> getData() async {
@@ -43,6 +45,18 @@ class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStat
       setState(() {
         data = jsonDecode(response.body);
         print(data);
+      });
+    } else {
+      showToast(context, 'Алдаа гарлаа');
+    }
+  }
+
+  Future<void> getRestaurantList() async {
+    final response = await http.get(Uri.parse('http://localhost:8081/selectRestaurant'));
+    if (response.statusCode == 200) {
+      setState(() {
+        restaurantList = jsonDecode(response.body);
+        print(restaurantList);
       });
     } else {
       showToast(context, 'Алдаа гарлаа');
@@ -69,8 +83,8 @@ class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     var _tabBarView = TabBarView(controller: _tabController, physics: const NeverScrollableScrollPhysics(), children: <Widget>[
-      OrderWidget(orderType: OrderType.active, data: data.isEmpty ? null : data),
-      OrderHistoryWidget(orderType: OrderType.history, data: data.isEmpty ? null : data),
+      OrderWidget(orderType: OrderType.active, data: data.isEmpty ? null : data, resList: restaurantList.isEmpty ? null : restaurantList),
+      OrderHistoryWidget(orderType: OrderType.history, data: data.isEmpty ? null : data, resList: restaurantList.isEmpty ? null : restaurantList),
     ]);
     return DefaultScaffold(
         appBar: DefaultAppBar(

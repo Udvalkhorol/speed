@@ -16,11 +16,6 @@ import '../order/ui/orderConfirmScreen.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
   static const routeName = "/shoppingCartScreen";
-
-  String location;
-
-  ShoppingCartScreen({this.location});
-
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }
@@ -35,9 +30,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     _selectShopCart();
     super.initState();
     _shopCart = [];
-    // widget.location = ModalRoute.of(context).settings.arguments as String;
-
-    print(widget.location);
   }
 
   Future<void> _selectShopCart() async {
@@ -123,7 +115,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         Navigator.pushNamed(context, OrderConfirmScreen.routeName, arguments: '');
                       },
                       isHaveLeading: true,
-                      // control: checkAll
                     ),
                 ],
               )

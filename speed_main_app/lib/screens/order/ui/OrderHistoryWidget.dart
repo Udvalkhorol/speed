@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import '../../../const/colors.dart';
-import '../../../utils/helper.dart';
 import '../../../widgets/lbl.dart';
 import '../../../widgets/separator.dart';
 import 'orderScreenDetail.dart';
@@ -11,7 +8,8 @@ import 'orderScreenDetail.dart';
 class OrderHistoryWidget extends StatefulWidget {
   final String orderType;
   final dynamic data;
-  const OrderHistoryWidget({this.orderType, this.data}) : super();
+  final dynamic resList;
+  const OrderHistoryWidget({this.orderType, this.data, this.resList}) : super();
 
   @override
   _OrderHistoryWidget createState() => _OrderHistoryWidget();
@@ -44,7 +42,8 @@ class _OrderHistoryWidget extends State<OrderHistoryWidget> {
                           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                           child: Column(
                             children: [
-                              if (index != 0) Separator(color: AppColor.gray),
+                              // if (index != 0)
+                              Separator(color: AppColor.gray),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,40 +66,72 @@ class _OrderHistoryWidget extends State<OrderHistoryWidget> {
                                           ],
                                         ),
                                         children: [
-                                          ListView.builder(
-                                            physics: NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: widget.data[index]['items'].length,
-                                            itemBuilder: (BuildContext context, int i) {
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.pushNamed(
-                                                    context,
-                                                    OrderScreenDetail.routeName,
-                                                    arguments: {'data': widget.data[index]['items'], 'from': 'history'},
-                                                  );
-                                                },
-                                                child: Container(
-                                                  child: Padding(
-                                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        lbl(
-                                                          utf8.decode(widget.data[index]['items'][i]['name'].toString().runes.toList()),
-                                                        ),
-                                                        lbl(
-                                                          widget.data[index]['items'][i]['price'].toString(),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                context,
+                                                OrderScreenDetail.routeName,
+                                                arguments: {'data': widget.data[index]['items'], 'from': 'history'},
                                               );
                                             },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 15),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  lbl(
+                                                    'Захиалгын дэлгэрэнгүй',
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  // lbl(widget.data[index]['status'].toString()),
+                                                  IconButton(
+                                                    color: AppColor.red,
+                                                    icon: Icon(
+                                                      Icons.arrow_forward_ios_rounded,
+                                                      size: 14,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ],
+                                        // children: [
+                                        //   ListView.builder(
+                                        //     physics: NeverScrollableScrollPhysics(),
+                                        //     shrinkWrap: true,
+                                        //     scrollDirection: Axis.vertical,
+                                        //     itemCount: widget.data[index]['items'].length,
+                                        //     itemBuilder: (BuildContext context, int i) {
+                                        //       return InkWell(
+                                        //         onTap: () {
+                                        //           Navigator.pushNamed(
+                                        //             context,
+                                        //             OrderScreenDetail.routeName,
+                                        //             arguments: {'data': widget.data[index]['items'], 'from': 'history'},
+                                        //           );
+                                        //         },
+                                        //         child: Container(
+                                        //           child: Padding(
+                                        //             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                        //             child: Row(
+                                        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        //               children: [
+                                        //                 lbl(
+                                        //                   utf8.decode(widget.data[index]['items'][i]['name'].toString().runes.toList()),
+                                        //                 ),
+                                        //                 lbl(
+                                        //                   widget.data[index]['items'][i]['price'].toString(),
+                                        //                 ),
+                                        //               ],
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       );
+                                        //     },
+                                        //   ),
+                                        // ],
                                       ),
                                     ),
                                   ),
