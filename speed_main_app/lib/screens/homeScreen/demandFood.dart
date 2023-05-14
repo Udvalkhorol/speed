@@ -28,27 +28,11 @@ class DemandFood extends StatelessWidget {
                   Helper.getAssetName("pizza4.jpg", "real"),
                   fit: BoxFit.cover,
                 ),
-                name: "Cafe De Bambaa",
+                name: "Pizza",
               ),
               SizedBox(height: 30),
               MostPopularCard(
-                name: "Burger by Bella",
-                image: Image.asset(
-                  Helper.getAssetName("dessert3.jpg", "real"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SizedBox(height: 30),
-              MostPopularCard(
-                name: "Burger by Bella",
-                image: Image.asset(
-                  Helper.getAssetName("dessert3.jpg", "real"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SizedBox(height: 30),
-              MostPopularCard(
-                name: "Burger by Bella",
+                name: "Sandwich",
                 image: Image.asset(
                   Helper.getAssetName("dessert3.jpg", "real"),
                   fit: BoxFit.cover,

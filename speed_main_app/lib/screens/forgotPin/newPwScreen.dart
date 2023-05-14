@@ -24,10 +24,6 @@ class NewPwScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               children: [
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // Text("Шинэ нууц үг", style: Helper.getTheme(context).headline6),
                 SizedBox(
                   height: 20,
                 ),
@@ -53,14 +49,7 @@ class NewPwScreen extends StatelessWidget {
                         text: "Үргэлжлүүлэх",
                         onPressed: () {
                           Navigator.of(context).pushNamed(IntroScreen.routeName);
-                        })
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     Navigator.of(context).pushReplacementNamed(IntroScreen.routeName);
-                    //   },
-                    //   child: Text("Next"),
-                    // ),
-                    )
+                        }))
               ],
             ),
           ),

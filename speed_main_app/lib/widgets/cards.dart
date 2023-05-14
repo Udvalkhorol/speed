@@ -206,31 +206,25 @@ class RestaurantCard extends StatelessWidget {
                         color: AppColor.red,
                       ),
                     ),
+                    SizedBox(width: 10),
+                    Text("Cafe Bene Mongolia"),
                     SizedBox(
                       width: 5,
                     ),
-                    Text("(124 ratings)"),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text("Cafe"),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: Text(
-                        ".",
-                        style: TextStyle(
-                          color: AppColor.red,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text("Western Food"),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(bottom: 5.0),
+                    //   child: Text(
+                    //     ".",
+                    //     style: TextStyle(
+                    //       color: AppColor.red,
+                    //       fontWeight: FontWeight.w900,
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   width: 5,
+                    // ),
+                    // Text("Western Food"),
                   ],
                 ),
               ],

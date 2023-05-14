@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:speed_app/widgets/btn.dart';
+import 'package:speed_app/widgets/dialog.dart';
 import 'package:speed_app/widgets/lbl.dart';
 import 'package:speed_app/widgets/scaffold.dart';
 import '../../const/colors.dart';
@@ -123,6 +124,14 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
             child: btn(
               text: 'Нэмэх',
               onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AddItemDialog();
+                  },
+                );
+
+                // addAddressDlg();
                 // Navigator.pushNamed(context, )
               },
             ),

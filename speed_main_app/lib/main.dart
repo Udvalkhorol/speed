@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speed_app/screens/forgotPin/changePwScreen.dart';
 import 'package:speed_app/screens/homeScreen/demandFood.dart';
 import 'package:speed_app/screens/order/ui/orderConfirmScreen.dart';
 import 'package:speed_app/screens/settings/changeAddressScreen.dart';
@@ -16,12 +17,12 @@ import 'screens/forgotPin/newPwScreen.dart';
 import 'screens/login/introScreen.dart';
 import 'screens/homeScreen/homeScreen.dart';
 import 'screens/restaurant/restaurant.dart';
-import 'screens/settings/moreScreen.dart';
+import 'screens/settings/helpScreen.dart';
 import 'screens/homeScreen/specialRestaur.dart';
 import 'screens/settings/profileScreen.dart';
-import 'screens/prod_detail/individualItem.dart';
+import 'screens/prod_detail/prodDetailScreen.dart';
 import 'screens/notification/notificationScreen.dart';
-import 'screens/settings/aboutScreen.dart';
+import 'screens/settings/helpScreen.dart';
 import 'screens/order/ui/orderScreenDetail.dart';
 import './const/colors.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Speed Food Delivery',
       theme: ThemeData(
         fontFamily: "Metropolis",
         primarySwatch: Colors.red,
@@ -92,10 +93,9 @@ class MyApp extends StatelessWidget {
         RestaurantScreen.routeName: (context) => RestaurantScreen(),
         SpecialRes.routeName: (context) => SpecialRes(),
         ProfileScreen.routeName: (context) => ProfileScreen(),
-        MoreScreen.routeName: (context) => MoreScreen(),
-        IndividualItem.routeName: (context) => IndividualItem(),
+        HelpScreen.routeName: (context) => HelpScreen(),
+        ProdDetailScreen.routeName: (context) => ProdDetailScreen(),
         NotificationScreen.routeName: (context) => NotificationScreen(),
-        AboutScreen.routeName: (context) => AboutScreen(),
         OrderScreen.routeName: (context) => OrderScreen(),
         ChangeAddressScreen.routeName: (context) => ChangeAddressScreen(),
         ShoppingCartScreen.routeName: (context) => ShoppingCartScreen(),
@@ -104,6 +104,7 @@ class MyApp extends StatelessWidget {
         SearchScreen.routeName: (context) => SearchScreen(),
         DemandFood.routeName: (context) => DemandFood(),
         OrderConfirmScreen.routeName: (context) => OrderConfirmScreen(),
+        ChangePwScreen.routeName: (context) => ChangePwScreen(),
       },
     );
   }

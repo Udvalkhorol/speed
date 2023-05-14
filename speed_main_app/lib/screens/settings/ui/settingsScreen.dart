@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:speed_app/screens/forgotPin/forgetPwScreen.dart';
 import 'package:speed_app/screens/login/loginScreen.dart';
-import 'package:speed_app/screens/settings/moreScreen.dart';
+import 'package:speed_app/screens/settings/helpScreen.dart';
 import 'package:speed_app/widgets/lbl.dart';
 import 'package:speed_app/widgets/scaffold.dart';
 
@@ -13,6 +12,7 @@ import '../../../utils/helper.dart';
 import '../../../widgets/appbar.dart';
 import '../../../widgets/customNavBar.dart';
 import '../../../widgets/separator.dart';
+import '../../forgotPin/changePwScreen.dart';
 import '../changeAddressScreen.dart';
 import '../profileScreen.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +25,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenToState extends State<SettingsScreen> {
-  List<dynamic> _data = [];
+  List<dynamic> _data;
 
   @override
   void initState() {
@@ -113,11 +113,20 @@ class _SettingsScreenToState extends State<SettingsScreen> {
                         ),
                         SizedBox(width: 10),
                         if (_data != null)
-                          lbl(
-                            // _data[0]['firstname'],
-                            'Udvalkhorol',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 18,
+                          Row(
+                            children: [
+                              lbl(
+                                _data[0]['firstname'],
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                              SizedBox(width: 5),
+                              lbl(
+                                _data[0]['lastname'],
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ],
                           ),
                       ],
                     ),
@@ -147,14 +156,14 @@ class _SettingsScreenToState extends State<SettingsScreen> {
                         icon: Icons.lock,
                         iconColor: AppColor.red,
                         onPressed: () {
-                          Navigator.pushNamed(context, ForgetPwScreen.routeName);
+                          Navigator.pushNamed(context, ChangePwScreen.routeName);
                         }),
                     _settingCard(
                         title: 'Тусламж',
                         icon: Icons.help,
                         iconColor: AppColor.red,
                         onPressed: () {
-                          Navigator.of(context).pushNamed(MoreScreen.routeName);
+                          Navigator.of(context).pushNamed(HelpScreen.routeName);
                         }),
                     _settingCard(
                         title: 'Гарах',

@@ -16,9 +16,8 @@ class _IntroScreenState extends State<IntroScreen> {
   var _controller;
   int count;
   final List<Map<String, String>> _pages = [
-    {"image": "vector1.png", "title": "Find Food You Love", "desc": "Discover the best foods from over 1,000 restaurants and fast delivery to your doorstep"},
-    {"image": "vector2.png", "title": "Fast Delivery", "desc": "Fast food delivery to your home, office wherever you are"},
-    {"image": "vector3.png", "title": "Live Tracking", "desc": "Real time tracking of your food on the app once you placed the order"},
+    {"image": "vector1.png", "title": "Яг одоо захиал", "desc": "Таны хэзээд бид таны хоолыг гэрт тань хүргэнэ"},
+    {"image": "vector3.png", "title": "Түргэн хоол", "desc": "Хүссэн газарт тань бид таны захиалгыг хүргэнэ"},
   ];
 
   @override
@@ -63,20 +62,12 @@ class _IntroScreenState extends State<IntroScreen> {
                       radius: 5,
                       backgroundColor: count == 0 ? AppColor.red : AppColor.placeholder,
                     ),
-                    SizedBox(
-                      width: 5,
-                    ),
+                    SizedBox(width: 5),
                     CircleAvatar(
                       radius: 5,
                       backgroundColor: count == 1 ? AppColor.red : AppColor.placeholder,
                     ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    CircleAvatar(
-                      radius: 5,
-                      backgroundColor: count == 2 ? AppColor.red : AppColor.placeholder,
-                    )
+                    SizedBox(width: 5),
                   ],
                 ),
                 Spacer(),

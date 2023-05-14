@@ -8,12 +8,13 @@ class SearchBar extends StatelessWidget {
   final String title;
   final double width;
   final double height;
-  SearchBar({@required this.title, this.width, this.height});
+  VoidCallback onPressed;
+  SearchBar({@required this.title, this.width, this.height, this.onPressed});
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, SearchScreen.routeName);
+        onPressed();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -29,19 +30,6 @@ class SearchBar extends StatelessWidget {
               lbl(title, color: AppColor.placeholder, fontSize: 18),
             ],
           ),
-          // TextField(
-          //   decoration: InputDecoration(
-          //     border: InputBorder.none,
-          //     prefixIcon: Image.asset(
-          //       Helper.getAssetName("search_filled.png", "virtual"),
-          //     ),
-          //     hintText: title,
-          //     hintStyle: TextStyle(
-          //       color: AppColor.placeholder,
-          //       fontSize: 18,
-          //     ),
-          //   ),
-          // ),
         ),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:speed_app/screens/login/introScreen.dart';
 import '../../const/colors.dart';
 import '../../global/global.dart';
-import '../../global/user.dart';
 import '../forgotPin/forgetPwScreen.dart';
 import '../homeScreen/homeScreen.dart';
 import '../signup/signUpScreen.dart';
@@ -17,7 +17,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreen extends State<LoginScreen> {
-  String _response = '';
   final TextEditingController phone = TextEditingController();
   final TextEditingController password = TextEditingController();
 

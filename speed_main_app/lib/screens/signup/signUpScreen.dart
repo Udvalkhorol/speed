@@ -28,13 +28,14 @@ class _SignUpScreen extends State<SignUpScreen> {
   final TextEditingController district = TextEditingController();
   final TextEditingController street = TextEditingController();
   final TextEditingController info = TextEditingController();
+  final TextEditingController lastname = TextEditingController();
 
   Future<void> _postData() async {
     final response = await http.post(
       Uri.parse('http://localhost:8081/register?firstName=' +
           name.text +
           '&lastName=' +
-          name.text +
+          lastname.text +
           '&mobileNum=' +
           phone.text +
           '&password=' +
@@ -132,6 +133,37 @@ class _SignUpScreen extends State<SignUpScreen> {
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Нэр",
+                            hintStyle: const TextStyle(
+                              color: AppColor.primary,
+                            ),
+                            icon: Icon(Icons.person),
+                            iconColor: AppColor.red,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    Container(
+                      height: 55,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: AppColor.lblPrimary,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 0.5),
+                            blurRadius: 1.5,
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: TextField(
+                          controller: lastname,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Овог",
                             hintStyle: const TextStyle(
                               color: AppColor.primary,
                             ),

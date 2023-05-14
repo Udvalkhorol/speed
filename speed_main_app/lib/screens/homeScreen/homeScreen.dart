@@ -8,8 +8,9 @@ import '../../global/global.dart';
 import '../../utils/helper.dart';
 import '../../widgets/cards.dart';
 import '../../widgets/customNavBar.dart';
-import '../prod_detail/individualItem.dart';
 import '../../widgets/searchBar.dart';
+import '../prod_detail/prodDetailScreen.dart';
+import '../search/searchScreen.dart';
 import '../shopping_cart/shoppingCartScreen.dart';
 import 'package:http/http.dart' as http;
 
@@ -110,10 +111,16 @@ class _HomeScreen extends State<HomeScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           ),
                           child: SearchBar(
-                            title: "Хайх",
-                            width: 280,
-                            height: 40,
-                          ),
+                              title: "Хайх",
+                              width: 280,
+                              height: 40,
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  SearchScreen.routeName,
+                                  arguments: {'food': _foodList},
+                                );
+                              }),
                         ),
                         SizedBox(
                           width: 50,
@@ -163,7 +170,6 @@ class _HomeScreen extends State<HomeScreen> {
                             icon: Image.asset(
                               Helper.getAssetName("dropdown_filled.png", "virtual"),
                             ),
-                            // style: Helper.getTheme(context).headline4,
                           ),
                         ),
                       ),
@@ -181,7 +187,7 @@ class _HomeScreen extends State<HomeScreen> {
                               InkWell(
                                 onTap: () {
                                   Navigator.of(context).pushNamed(
-                                    IndividualItem.routeName,
+                                    ProdDetailScreen.routeName,
                                     arguments: {'food': _foodList[index]},
                                   );
                                 },
