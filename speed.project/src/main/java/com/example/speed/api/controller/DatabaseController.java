@@ -308,4 +308,17 @@ public class DatabaseController {
 	 
 	}
 	
+	@RequestMapping("/updateFoodQty")
+	public void updateFoodQty(int qty, int userId, int foodId) throws Exception {
+	    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	    
+		String sql = "update sp_order_cart set qty = ?, total_price = price * qty where user_id = ? and food_id = ? ;";
+	    
+		jdbcTemplate.update(sql, qty, userId, foodId);
+	 
+	}
+	
+	
+	
+	
 }
